@@ -1,5 +1,9 @@
 import requests as r
 import geopy
+import os
+from datetime import datetime
+
+
 
 
 def git_search(query, language='python'):
@@ -26,3 +30,16 @@ def get_city(lat, lon):
     location = locator.reverse(str(lat) + ',' + str(lon))
     address = location.raw['address']
     return address
+
+
+def get_forecast(lat, lon):
+    url = 'https://api.openweather.org/data/2.5/forecast'
+    params = {
+        'lat' : lat,
+        'lon' : lon,
+        'appid' : os.environ.get('weather_app'),
+        'units' : 'metric',
+        'lang' : 'ru',
+    }
+    resp = r.get(url, params=params).json()
+    return resp
